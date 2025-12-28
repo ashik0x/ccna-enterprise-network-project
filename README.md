@@ -32,9 +32,28 @@ This project demonstrates the design and implementation of a real-world enterpri
 - Cisco Packet Tracer
 
 ## 📷 Screenshots
-(Topology, VLAN configuration, OSPF, NAT validation)
+
+### Network Topology
+![Network Topology](topology.png)
+
+### VLAN Configuration
+![VLAN Configuration](VLAN-config.png)
+
+### DHCP Testing
+![DHCP Test](DHCP-test.png)
 
 ## 📁 Files Included
-- `.pkt` topology file
-- Device configuration files
-- Network documentation
+
+- [Enterprise Network Topology (.pkt)](enterprice%20network.pkt)
+
+- [Core Switch Configuration](core-SW-config.txt)
+
+- [HR Switch Configuration](HR-SW-config.txt)
+
+- [IT Switch Configuration](IT-SW-config.txt)
+
+- [Sales Switch Configuration](SALES-SW-config.txt)
+
+- [Router 1 Configuration](router%201-config.txt)
+
+- [Router 2 Configuration](router2-config.txt)
