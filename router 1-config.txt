@@ -1,0 +1,135 @@
+! ======================================================
+! R1 - Enterprise Edge Router Configuration
+! Router-on-a-Stick | DHCP | OSPF | NAT | ACL
+! ======================================================
+
+enable
+configure terminal
+
+! ------------------------------
+! PHYSICAL INTERFACES
+! ------------------------------
+
+interface GigabitEthernet0/0
+ description Trunk to Core Switch
+ no shutdown
+exit
+
+interface GigabitEthernet0/1
+ description DMZ Network
+ ip address 192.168.50.1 255.255.255.0
+ no shutdown
+exit
+
+interface Serial0/0/0
+ description Link to ISP / R2
+ no shutdown
+exit
+
+! ------------------------------
+! SUBINTERFACES (INTER-VLAN ROUTING)
+! ------------------------------
+
+interface GigabitEthernet0/0.10
+ description HR VLAN
+ encapsulation dot1Q 10
+ ip address 192.168.10.1 255.255.255.0
+ ip nat inside
+exit
+
+interface GigabitEthernet0/0.20
+ description IT VLAN
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+ ip nat inside
+exit
+
+interface GigabitEthernet0/0.30
+ description SALES VLAN
+ encapsulation dot1Q 30
+ ip address 192.168.30.1 255.255.255.0
+ ip nat inside
+ ip access-group 100 in
+exit
+
+! ------------------------------
+! NAT CONFIGURATION
+! ------------------------------
+
+interface GigabitEthernet0/1
+ ip nat inside
+exit
+
+interface Serial0/0/0
+ ip nat outside
+exit
+
+access-list 1 permit 192.168.0.0 0.0.255.255
+ip nat inside source list 1 interface Serial0/0/0 overload
+
+! ------------------------------
+! DHCP CONFIGURATION
+! ------------------------------
+
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
+ip dhcp excluded-address 192.168.20.1 192.168.20.10
+ip dhcp excluded-address 192.168.30.1 192.168.30.10
+
+ip dhcp pool HR
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ dns-server 8.8.8.8
+exit
+
+ip dhcp pool IT
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ dns-server 8.8.8.8
+exit
+
+ip dhcp pool SALES
+ network 192.168.30.0 255.255.255.0
+ default-router 192.168.30.1
+ dns-server 8.8.8.8
+exit
+
+ip dhcp pool DMZ
+ network 192.168.50.0 255.255.255.0
+ default-router 192.168.50.1
+ dns-server 8.8.8.8
+exit
+
+! ------------------------------
+! OSPF ROUTING (BEST PRACTICE)
+! ------------------------------
+
+router ospf 1
+ router-id 1.1.1.1
+ network 192.168.0.0 0.0.255.255 area 0
+ passive-interface default
+ no passive-interface Serial0/0/0
+exit
+
+! ------------------------------
+! DEFAULT ROUTE (INTERNET)
+! ------------------------------
+
+ip route 0.0.0.0 0.0.0.0 Serial0/0/0
+
+! ------------------------------
+! ACL SECURITY
+! SALES VLAN CANNOT ACCESS IT VLAN
+! ------------------------------
+
+access-list 100 deny ip 192.168.30.0 0.0.0.255 192.168.20.0 0.0.0.255
+access-list 100 permit ip any any
+
+! ------------------------------
+! HARDENING (OPTIONAL)
+! ------------------------------
+
+no ip http server
+no ip http secure-server
+
+end
+write memory
