@@ -1,0 +1,14 @@
+enable
+conf t
+vlan 10
+name HR
+exit
+
+interface range fa0/1-2
+switchport mode access
+switchport access vlan 10
+exit
+
+interface fa0/24
+switchport mode trunk
+exit
