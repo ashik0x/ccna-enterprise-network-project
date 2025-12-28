@@ -28,8 +28,23 @@ This project demonstrates the design and implementation of a real-world enterpri
 - Routing verification
 - Security rule validation
 
-## 🛠️ Tools
-- Cisco Packet Tracer
+## 🧠 Skills Gained
+
+### Networking Skills
+- Enterprise network design (Core–Access architecture)
+- VLAN creation and network segmentation
+- Inter-VLAN routing (Router-on-a-Stick)
+- Dynamic routing using OSPF
+- IP addressing and subnetting
+- DHCP configuration and troubleshooting
+- NAT (PAT) configuration for internet access
+- Extended ACLs for traffic filtering
+- DMZ design and implementation
+
+### Security Skills
+- Network segmentation for security isolation
+- Access control using extended ACLs
+- Securing public-facing services using DMZ
 
 ## 📷 Screenshots
 
