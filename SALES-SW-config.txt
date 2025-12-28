@@ -1,0 +1,14 @@
+enable
+conf t
+vlan 30
+name SALES
+exit
+
+interface range fa0/1-2
+switchport mode access
+switchport access vlan 30
+exit
+
+interface fa0/24
+switchport mode trunk
+exit
