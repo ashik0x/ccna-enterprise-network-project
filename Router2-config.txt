@@ -1,0 +1,49 @@
+! ======================================================
+! R2 - WAN / ISP Router Configuration
+! OSPF | Internet Simulation
+! ======================================================
+
+enable
+configure terminal
+
+! ------------------------------
+! INTERFACES
+! ------------------------------
+
+interface Serial0/0/0
+ description Link to R1
+ ip address 10.0.0.2 255.255.255.252
+ clock rate 64000
+ no shutdown
+exit
+
+interface GigabitEthernet0/0
+ description Internet / Cloud Network
+ ip address 203.0.113.1 255.255.255.0
+ no shutdown
+exit
+
+! ------------------------------
+! OSPF ROUTING
+! ------------------------------
+
+router ospf 1
+ router-id 2.2.2.2
+ network 10.0.0.0 0.0.0.3 area 0
+exit
+
+! ------------------------------
+! DEFAULT ROUTE (INTERNET)
+! ------------------------------
+
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0
+
+! ------------------------------
+! OPTIONAL HARDENING
+! ------------------------------
+
+no ip http server
+no ip http secure-server
+
+end
+write memory
