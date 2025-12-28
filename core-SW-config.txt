@@ -1,0 +1,45 @@
+enable
+configure terminal
+
+hostname CORE-SW
+
+! ------------------------------
+! CREATE VLANs
+! ------------------------------
+
+vlan 10
+name HR
+exit
+
+vlan 20
+name IT
+exit
+
+vlan 30
+name SALES
+exit
+
+vlan 50
+name DMZ
+exit
+
+! ------------------------------
+! TRUNK TO ROUTER
+! ------------------------------
+
+interface FastEthernet0/1
+switchport mode trunk
+no shutdown
+exit
+
+! ------------------------------
+! TRUNKS TO ACCESS SWITCHES
+! ------------------------------
+
+interface range FastEthernet0/2 - 4
+switchport mode trunk
+no shutdown
+exit
+
+end
+write memory
